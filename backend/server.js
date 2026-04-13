@@ -19,11 +19,14 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["https://estore-nu.vercel.app", "http://localhost:5173"], // Allow both live site and local testing
+    credentials: true
+}));
 
 
 
-const PORT = process.env.PORT || 3000 ;
+const PORT = process.env.PORT || 3000;
 
 // connect mongodb
 connectDB();
