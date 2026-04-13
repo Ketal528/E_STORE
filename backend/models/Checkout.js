@@ -1,0 +1,77 @@
+const mongoose = require("mongoose");
+
+const checkoutItemSchema = new mongoose.Schema({
+    productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "product",
+        require: true
+    },
+    name: {
+        type: String,
+        require: true
+    },
+    image: {
+        type: String,
+        require: true
+    },
+   price: {
+    type: Number,
+    require: true
+   },
+    quantity: {
+        type: Number,
+        require: true,
+    },
+    size: String,
+    color: String,
+},
+{_id: false}
+);
+
+const checkoutSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    checkoutItems: [checkoutItemSchema],
+    shippingAddress: {
+        address: { type: String, require: true},
+        city: { type: String, require: true},
+        postalCode: { type: String, require: true},
+        country : { type: String, require: true},
+    },
+    paymentMethod: {
+        type: String,
+        require: true,
+    },
+    totalPrice: {
+        type: Number,
+        require: true,
+    },
+    isPaid: {
+        type: Boolean,
+        default: false,
+    },
+    paidAt: {
+        type: Date,
+    },
+    paymentStatus: {
+        type: String,
+        default: "pending",
+    },
+    paymentDetails: {
+        type: mongoose.Schema.Types.Mixed, //store payment-releted details (transition ID, paypalresponse)
+    },
+    isFinalied: {
+        type: Boolean,
+        default: false,
+    },
+    finalizedAt: {
+        type: Date,
+    }
+},
+{ timestamps: true }
+);
+
+module.exports = mongoose.model("Checkout", checkoutSchema)
